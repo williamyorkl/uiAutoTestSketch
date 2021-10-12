@@ -32,35 +32,30 @@ interface sketchTreeType extends Partial<typeof sketchJsonNodeTree> {
 }
 
 /** node节点树的形状 */
-interface treeShapeType {
-  name: string | undefined;
-  rectAttr: object | null | undefined;
+export interface treeShapeType {
+  name: string | undefined | null;
+  rectAttr: typeof sketchJsonNodeTree["frame"] | null | undefined;
   sketchChildren: Array<sketchTreeType> | null | undefined;
-  children: treeShapeType[];
+  children: treeShapeType[] | null;
 }
 
 export function preProcessSketchTree(
   sketchNode: sketchTreeType,
   initStat?: number
-) {
-  const treeShape: treeShapeType = {
-    name: "",
-    rectAttr: {},
-    sketchChildren: [],
-    children: [],
-  };
+): treeShapeType | {} {
+  const treeShape: treeShapeType | {} = {};
 
   let $parent = initStat === 0 ? sketchNode?.layers[0] : sketchNode;
 
-  treeShape.name = $parent?.name;
-  treeShape.rectAttr = $parent?.frame;
-  treeShape.sketchChildren = $parent?.layers;
+  treeShape["name"] = $parent?.name;
+  treeShape["rectAttr"] = $parent?.frame;
+  treeShape["sketchChildren"] = $parent?.layers;
 
-  if (!treeShape.sketchChildren) return treeShape; // 1) pupetteer如果没找到children，递归结束
+  if (!treeShape["sketchChildren"]) return treeShape; // 1) pupetteer如果没找到children，递归结束
 
-  for (const child of treeShape.sketchChildren) {
+  for (const child of treeShape["sketchChildren"]) {
     const childNode = preProcessSketchTree(child);
-    childNode && treeShape.children.push(childNode);
+    childNode && treeShape["sketchChildren"].push(childNode);
   }
 
   return treeShape; //  2) 最终结果出口

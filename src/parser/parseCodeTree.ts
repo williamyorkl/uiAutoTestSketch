@@ -2,12 +2,13 @@
  * parse code nodeTree by pupetteer into jsonTree
  */
 
-import type { ElementHandle } from "puppeteer";
+import type { ElementHandle, BoundingBox } from "puppeteer";
+import type { NodeTree } from "../../typings/basicTree";
 
 /** node节点树的形状 */
-interface treeShapeType {
+export interface treeShapeType extends NodeTree {
   name: string | undefined;
-  rectAttr: object | null | undefined;
+  rectAttr: BoundingBox | null | undefined;
   puppetChildren: Array<ElementHandle> | null | undefined;
   children: treeShapeType[];
 }
@@ -15,10 +16,10 @@ interface treeShapeType {
 export async function preProcessPuppeTree(
   puppeNode: ElementHandle | null,
   initStat?: number
-) {
+): Promise<treeShapeType> {
   const treeShape: treeShapeType = {
     name: "",
-    rectAttr: {},
+    rectAttr: null,
     puppetChildren: [],
     children: [],
   };

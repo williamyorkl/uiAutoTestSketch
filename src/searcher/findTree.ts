@@ -1,3 +1,6 @@
+import type { treeShapeType as codeTreeShapeType } from "../parser/parseCodeTree";
+import type { treeShapeType as sketchTreeShapeType } from "../parser/parseSketchTree";
+
 /** 代码node树 */
 const mainNode: TreeType = [
   {
@@ -188,12 +191,12 @@ const sketchJsonList: TreeType = [
  *  （一直到sketch最小的那层，例如是“层3”）
  *
  *  3）最小的那层传入到code树[1]，如下情况：
- *    * 找到对应code树的节点
+ *    - 找到对应code树的节点
  *      - 匹配color
  *      - 匹配font-family
  *      若都可以匹配上，则说明一样，输出结果；如果匹配补上，输出匹配失败的结果
  *
- *    * 找不到对应code树的节点
+ *    - 找不到对应code树的节点
  *      - 有待考虑处理结果
  */
 
@@ -203,7 +206,10 @@ const sketchJsonList: TreeType = [
  * @param {object} node 整颗树的节点对象
  * @returns {array} [code父节点1，code父节点2, ... ]
  */
-function breadthFirstSearch(sNode: NodeTree, node: NodeTree): Array<NodeTree> {
+function breadthFirstSearch(
+  sNode: sketchTreeShapeType,
+  node: codeTreeShapeType
+): Array<codeTreeShapeType> {
   const { rectAttr: sNodeAttr } = sNode;
 
   var nodes = [];
@@ -248,12 +254,12 @@ function handleFindTree(sketchTree, codeTree) {
   return matchFatherNodeList;
 }
 
-/** 一、获取到对应sketch树的code的父节点 */
+//  * 一、获取到对应sketch树的code的父节点
+
 const codeFatherNodeList = handleFindTree(sketchJsonList, mainNode[0]);
 // console.log("🚀 符合条件的code父节点：", codeFatherNodeList);
 
-/** 二、遍历第一个sketch节点的children，是否在matchedCode父节点中 */
-
+// * 二、遍历第一个sketch节点的children，是否在matchedCode父节点中
 function handleFindChildNode() {
   const matchChildNode = [];
   sketchJsonList[0].children.forEach((sCNode, sCIndex) => {
@@ -280,45 +286,37 @@ function handleFindChildNode() {
 
   return matchChildNode;
 }
-
-const res2 = handleFindChildNode();
+// const res2 = handleFindChildNode();
 // console.log("🚀 符合条件的子节点:", res2);
 
-/**
- * 三、改造"第一、二步"成为递归函数
- * @param {Array} sketchTree
- * @param {Array} codeTree
- */
+// * 三、改造"第一、二步"成为递归函数
 
-interface RectType {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+// 重载函数：测试用法
+// function handleRecursiveFindChildren(
+//   sketchTree: TreeType,
+//   codeTree: TreeType,
+//   counter: number | null
+// ): MatchedMap<TreeType>;
 
-interface NodeTree {
-  name: string;
-  rectAttr: RectType;
-  children: TreeType | null;
-}
+// let res = handleRecursiveFindChildren(sketchJsonList, mainNode, 0);
 
-type TreeType = Array<NodeTree>;
+// 重载函数：实际用法
+// function handleRecursiveFindChildren(
+//   sketchTree: sketchTreeShapeType,
+//   codeTree: codeTreeShapeType,
+//   counter: number | null
+// ): MatchedMap<codeTreeShapeType>;
 
-interface MatchedMap {
-  [key: string]: TreeType;
-}
-
-function handleRecursiveFindChildren(
-  sketchTree: TreeType,
-  codeTree: TreeType,
+export function handleRecursiveFindChildren(
+  sketchTree: sketchTreeShapeType[],
+  codeTree: codeTreeShapeType[],
   counter: number | null
-): MatchedMap {
-  const matchedNodeMap: MatchedMap = {};
+) {
+  const matchedNodeMap: MatchedMap<codeTreeShapeType> = {};
 
   //  遍历传入的sketchTree
   for (let sIndex = 0; sIndex < sketchTree.length; sIndex++) {
-    const matchNodeList = []; // [fNode1,fNode2, ... ]
+    const matchNodeList: codeTreeShapeType[] = []; // [fNode1,fNode2, ... ]
 
     // 定义节点
     const sNode = sketchTree[sIndex];
@@ -353,8 +351,6 @@ function handleRecursiveFindChildren(
   }
 }
 
-let res = handleRecursiveFindChildren(sketchJsonList, mainNode, 0);
+// handleRecursiveFindChildren
 
-console.log("🚀 ~ file: findTree.ts ~ line 338 ~ res", res);
-
-/* 四、 添加各种匹配条件 */
+// * 四、 添加各种匹配条件

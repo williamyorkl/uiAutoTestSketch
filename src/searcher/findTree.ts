@@ -1,3 +1,4 @@
+import { MatchedMap } from "../../typings/basicTree";
 import type { treeShapeType as codeTreeShapeType } from "../parser/parseCodeTree";
 import type { treeShapeType as sketchTreeShapeType } from "../parser/parseSketchTree";
 

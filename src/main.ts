@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import { preProcessPuppeTree } from "./parser/parseCodeTree";
 import { sketchParsedTree } from "./formatHandler/handleSketchJson";
 import { handleRecursiveFindChildren } from "./searcher/findTree";
+import { treeShapeType } from "./parser/parseSketchTree";
 
 try {
   (async () => {
@@ -17,17 +18,26 @@ try {
     await page.setViewport({ width: 375, height: 812 });
     const entryNode = await page?.$("body");
 
-    // * 代码树
+    // * 1. 代码树
     const codeTree = await preProcessPuppeTree(entryNode, 0);
 
-    // * sketch树
+    // * 2. sketch树
     const sketchTree = sketchParsedTree;
 
-    if (Object.keys(sketchTree).length === 0) return;
+    // typeof的增强型类型判断
+    function isSpecificType<T, P>(
+      Itype: T | P,
+      objArg: string,
+      basicArgType: string | number | boolean
+    ): Itype is T {
+      return typeof Itype[objArg] === basicArgType;
+    }
 
-    const res = handleRecursiveFindChildren([sketchTree], [codeTree], 0);
+    if (isSpecificType<treeShapeType, {}>(sketchTree, "name", "string")) {
+      const res = handleRecursiveFindChildren([sketchTree], [codeTree], 0);
 
-    console.log("🚀 结果：", res);
+      console.log("🚀 结果：", res);
+    }
 
     // console.log("codeTree：", codeTree);
 

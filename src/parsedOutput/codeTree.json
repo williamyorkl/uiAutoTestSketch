@@ -1,0 +1,27 @@
+{
+  "name": "div#app",
+  "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 667 },
+  "children": [
+    {
+      "name": "div.main",
+      "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 667 },
+      "children": [
+        {
+          "name": "div.header",
+          "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 95 },
+          "children": []
+        },
+        {
+          "name": "div.body",
+          "rectAttr": { "x": 0, "y": 95, "width": 375, "height": 406 },
+          "children": []
+        },
+        {
+          "name": "div.footer",
+          "rectAttr": { "x": 0, "y": 501, "width": 375, "height": 166 },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

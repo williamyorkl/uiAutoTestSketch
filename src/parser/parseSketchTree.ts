@@ -48,14 +48,16 @@ export function preProcessSketchTree(
   let $parent = initStat === 0 ? sketchNode?.layers[0] : sketchNode;
 
   treeShape["name"] = $parent?.name;
-  treeShape["rectAttr"] = $parent?.frame;
+  const { x, y, width, height } = $parent?.frame;
+  treeShape["rectAttr"] = { x, y, width, height };
   treeShape["sketchChildren"] = $parent?.layers;
+  treeShape["children"] = [];
 
   if (!treeShape["sketchChildren"]) return treeShape; // 1) pupetteer如果没找到children，递归结束
 
   for (const child of treeShape["sketchChildren"]) {
     const childNode = preProcessSketchTree(child);
-    childNode && treeShape["sketchChildren"].push(childNode);
+    childNode && treeShape["children"].push(childNode);
   }
 
   return treeShape; //  2) 最终结果出口

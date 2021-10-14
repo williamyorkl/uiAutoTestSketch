@@ -3,6 +3,7 @@ import { preProcessPuppeTree } from "./parser/parseCodeTree";
 import { sketchParsedTree } from "./formatHandler/handleSketchJson";
 import { handleRecursiveFindChildren } from "./searcher/findTree";
 import { treeShapeType } from "./parser/parseSketchTree";
+import { writeFileJson, recursivelyDeleteProps, isSpecificType } from "./utils";
 
 try {
   (async () => {
@@ -20,18 +21,13 @@ try {
 
     // * 1. 代码树
     const codeTree = await preProcessPuppeTree(entryNode, 0);
+    recursivelyDeleteProps(codeTree, "puppetChildren");
+    writeFileJson("./parsedOutput/codeTree.json", codeTree);
 
     // * 2. sketch树
     const sketchTree = sketchParsedTree;
-
-    // typeof的增强型类型判断
-    function isSpecificType<T, P>(
-      Itype: T | P,
-      objArg: string,
-      basicArgType: string | number | boolean
-    ): Itype is T {
-      return typeof Itype[objArg] === basicArgType;
-    }
+    recursivelyDeleteProps(sketchTree, "sketchChildren");
+    writeFileJson("./parsedOutput/sketchTree.json", sketchTree);
 
     if (isSpecificType<treeShapeType, {}>(sketchTree, "name", "string")) {
       const res = handleRecursiveFindChildren([sketchTree], [codeTree], 0);

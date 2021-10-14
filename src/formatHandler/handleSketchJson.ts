@@ -1,4 +1,5 @@
 import sketchJson from "../raw-sketch-file/test-unit1.json";
+import fs from "fs";
 
 import { preProcessSketchTree } from "../parser/parseSketchTree";
 
@@ -7,4 +8,15 @@ export const sketchJsonNodeTree =
 
 export const sketchParsedTree = preProcessSketchTree(sketchJsonNodeTree, 0);
 
-console.log("sketchParsedTree", sketchParsedTree);
+// fs.writeFileSync(
+//   "../parsedOutput/sketchTree.json",
+//   JSON.stringify([sketchParsedTree])
+// );
+
+// fs.writeFileSync(
+//   "../parsedOutput/sketchTree.json",
+//   JSON.stringify([sketchParsedTree]),
+//   {
+//     flag: "w+",
+//   }
+// );

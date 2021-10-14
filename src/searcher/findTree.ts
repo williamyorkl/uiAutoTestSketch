@@ -1,4 +1,4 @@
-import { MatchedMap } from "../../typings/basicTree";
+import { MatchedMap, TreeType } from "../../typings/basicTree";
 import type { treeShapeType as codeTreeShapeType } from "../parser/parseCodeTree";
 import type { treeShapeType as sketchTreeShapeType } from "../parser/parseSketchTree";
 
@@ -261,32 +261,32 @@ const codeFatherNodeList = handleFindTree(sketchJsonList, mainNode[0]);
 // console.log("🚀 符合条件的code父节点：", codeFatherNodeList);
 
 // * 二、遍历第一个sketch节点的children，是否在matchedCode父节点中
-function handleFindChildNode() {
-  const matchChildNode = [];
-  sketchJsonList[0].children.forEach((sCNode, sCIndex) => {
-    // 每个sketch的父1节点进入
-    if (sCNode.children) {
-      sCNode.children.forEach((scNode3) => {
-        // 遍历每个父节点的子节点，传入广度遍历中；限制搜索范围是：第一颗code父亲的树
-        const res = breadthFirstSearch(scNode3, codeFatherNodeList[sCIndex]);
-        matchChildNode.push(...res);
+// function handleFindChildNode() {
+//   const matchChildNode = [];
+//   sketchJsonList[0].children.forEach((sCNode, sCIndex) => {
+//     // 每个sketch的父1节点进入
+//     if (sCNode.children) {
+//       sCNode.children.forEach((scNode3) => {
+//         // 遍历每个父节点的子节点，传入广度遍历中；限制搜索范围是：第一颗code父亲的树
+//         const res = breadthFirstSearch(scNode3, codeFatherNodeList[sCIndex]);
+//         matchChildNode.push(...res);
 
-        // 如果scNode3还有子节点
-        if (scNode3.children) {
-          scNode3.children.forEach((scNode4) => {
-            const res = breadthFirstSearch(
-              scNode4,
-              codeFatherNodeList[sCIndex]
-            );
-            matchChildNode.push(...res);
-          });
-        }
-      });
-    }
-  });
+//         // 如果scNode3还有子节点
+//         if (scNode3.children) {
+//           scNode3.children.forEach((scNode4) => {
+//             const res = breadthFirstSearch(
+//               scNode4,
+//               codeFatherNodeList[sCIndex]
+//             );
+//             matchChildNode.push(...res);
+//           });
+//         }
+//       });
+//     }
+//   });
 
-  return matchChildNode;
-}
+//   return matchChildNode;
+// }
 // const res2 = handleFindChildNode();
 // console.log("🚀 符合条件的子节点:", res2);
 

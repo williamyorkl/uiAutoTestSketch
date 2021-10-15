@@ -4,6 +4,7 @@ import { sketchParsedTree } from "./formatHandler/handleSketchJson";
 import { handleRecursiveFindChildren } from "./searcher/findTree";
 import { treeShapeType } from "./parser/parseSketchTree";
 import { writeFileJson, recursivelyDeleteProps, isSpecificType } from "./utils";
+import { resolve } from "path";
 
 try {
   (async () => {
@@ -22,14 +23,15 @@ try {
     // * 1. 代码树
     const codeTree = await preProcessPuppeTree(entryNode, 0);
     recursivelyDeleteProps(codeTree, "puppetChildren");
-    writeFileJson("./parsedOutput/codeTree.json", codeTree);
+    writeFileJson(resolve(__dirname, "./parsedOutput/codeTree"), codeTree);
 
     // * 2. sketch树
     const sketchTree = sketchParsedTree;
     recursivelyDeleteProps(sketchTree, "sketchChildren");
-    writeFileJson("./parsedOutput/sketchTree.json", sketchTree);
+    writeFileJson(resolve(__dirname, "./parsedOutput/sketchTree"), sketchTree);
 
     if (isSpecificType<treeShapeType, {}>(sketchTree, "name", "string")) {
+      debugger;
       const res = handleRecursiveFindChildren([sketchTree], [codeTree], 0);
 
       console.log("🚀 结果：", res);

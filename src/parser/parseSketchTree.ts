@@ -40,12 +40,11 @@ export interface treeShapeType {
 }
 
 export function preProcessSketchTree(
-  sketchNode: sketchTreeType,
-  initStat?: number
+  sketchNode: sketchTreeType
 ): treeShapeType | {} {
   const treeShape: treeShapeType | {} = {};
 
-  let $parent = initStat === 0 ? sketchNode?.layers[0] : sketchNode;
+  let $parent = sketchNode;
 
   treeShape["name"] = $parent?.name;
   const { x, y, width, height } = $parent?.frame;

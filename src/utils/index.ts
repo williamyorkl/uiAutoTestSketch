@@ -4,10 +4,6 @@ export function writeFileJson(fileName: string, data: object) {
   fs.writeFileSync(`${fileName}.json`, JSON.stringify(data), { flag: "w" });
 }
 
-// interface dataObjType {
-//   toDeleteProp:string
-// }
-
 export function recursivelyDeleteProps(dataObj: any, toDeleteProp: string) {
   const toDeleteItem = toDeleteProp;
 

@@ -14,5 +14,5 @@ export declare interface RectType {
 declare type TreeType = Array<NodeTree>;
 
 declare interface MatchedMap<T> {
-  [key: string]: T | {}; // 没有匹配的有可能是空对象
+  [key: string]: T[] | {}; // 没有匹配的有可能是空对象
 }

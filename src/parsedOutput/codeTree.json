@@ -1,6 +1,6 @@
 {
   "name": "div#app",
-  "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 667 },
+  "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 825 },
   "children": [
     {
       "name": "div.main",
@@ -19,7 +19,19 @@
         {
           "name": "div.footer",
           "rectAttr": { "x": 0, "y": 501, "width": 375, "height": 166 },
-          "children": []
+          "children": [
+            {
+              "name": "cfoot1",
+              "rectAttr": { "x": 0, "y": 0, "width": 11175, "height": 166 },
+              "children": [
+                {
+                  "name": "cfoot1-1",
+                  "rectAttr": { "x": 0, "y": 0, "width": 3275, "height": 166 },
+                  "children": []
+                }
+              ]
+            }
+          ]
         }
       ]
     }

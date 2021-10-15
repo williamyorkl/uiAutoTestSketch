@@ -1,6 +1,7 @@
 import { MatchedMap, TreeType } from "../../typings/basicTree";
 import type { treeShapeType as codeTreeShapeType } from "../parser/parseCodeTree";
 import type { treeShapeType as sketchTreeShapeType } from "../parser/parseSketchTree";
+import * as condition from "./conditions";
 
 /** 代码node树 */
 const mainNode: TreeType = [
@@ -213,24 +214,29 @@ function breadthFirstSearch(
 ): Array<codeTreeShapeType> {
   const { rectAttr: sNodeAttr } = sNode;
 
-  var nodes = [];
+  let nodes = [];
   if (node != null) {
-    var queue = [];
+    let queue = [];
     queue.unshift(node); // 在队列的开头插入
     while (queue.length != 0) {
-      var item = queue.shift();
+      let item = queue.shift();
       const { rectAttr: codeNodeAttr } = item;
 
-      // 加判断条件
-      if (codeNodeAttr.x === sNodeAttr.x && codeNodeAttr.y === sNodeAttr.y) {
+      /* TODO - 判断条件 */
+      // &&
+      //   condition.xY(sNodeAttr, codeNodeAttr)
+      if (
+        condition.widthHeight(sNodeAttr, codeNodeAttr) &&
+        condition.xY(sNodeAttr, codeNodeAttr)
+      ) {
         nodes.push(item);
       }
 
-      var children = item.children;
+      let children = item.children;
       if (!children) {
         break;
       }
-      for (var i = 0; i < children.length; i++) {
+      for (let i = 0; i < children.length; i++) {
         queue.push(children[i]);
       }
     }
@@ -315,6 +321,11 @@ export function handleRecursiveFindChildren(
 ) {
   const matchedNodeMap: MatchedMap<codeTreeShapeType> = {};
 
+  /**
+   * TODO - 需要保存一个上一次查找的父亲节点
+   */
+  const lastTimeSawFatherNode = "";
+
   //  遍历传入的sketchTree
   for (let sIndex = 0; sIndex < sketchTree.length; sIndex++) {
     const matchNodeList: codeTreeShapeType[] = []; // [fNode1,fNode2, ... ]
@@ -330,11 +341,13 @@ export function handleRecursiveFindChildren(
 
     // 1）遍历当前children list下的item在 code树的匹配项
     sNodeChildren.forEach((ssNode, ssIndex) => {
-      // 传入sketchNode节点，BFS查找在codeTree的匹配节点
-      const resNodeArray = breadthFirstSearch(ssNode, codeTree[sIndex]);
+      // 传入sketchNode节点，在codeTree广度遍历查找匹配的节点
+      // const resultNodeArray = breadthFirstSearch(ssNode, codeTree[sIndex]);
+
+      const resultNodeArray = breadthFirstSearch(ssNode, codeTree[sIndex]);
 
       // 结果保存在matchNodeList
-      matchNodeList.push(...resNodeArray);
+      matchNodeList.push(...resultNodeArray);
     });
 
     // 获取到 matchNodeList 结果后，递归传入

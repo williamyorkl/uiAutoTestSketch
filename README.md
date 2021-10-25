@@ -2,11 +2,17 @@
 
 ## 框架概要
 
+### 前提
+
+1. 以 sketchTree 为标准，假设 sketchTree 中的每个节点都是存在的
+2. 即可以拿 sketchTree 的每个 **sketchNode**，塞到 **nodeTree** 中进行查找
+3. 为增加查找速度，每一次的子节点的查找范围，都是建立在“上一次找到的”叔父节点列表
+
 ### 1. 深度优先遍历 sketchNodeTree 对象
 
 #### 1）处理逻辑
 
-- 取得的每一个 sketchNode 对象，都塞到`广度优先查找方法`进行查找
+- 取得的每一个 sketchNode 对象，都塞到 codeTree 进行`广度优先查找方法`进行查找
 
 - 如果符合条件的结果，会被推入一个 resultNodeArr 数组，最终，数组会被合并到一个对象里面，如下
 

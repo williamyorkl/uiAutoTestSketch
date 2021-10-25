@@ -208,9 +208,10 @@ const sketchJsonList: TreeType = [
  * @param {object} node 整颗树的节点对象
  * @returns {array} [code父节点1，code父节点2, ... ]
  */
-function breadthFirstSearch(
+export function breadthFirstSearch(
   sNode: sketchTreeShapeType,
-  node: codeTreeShapeType
+  node: codeTreeShapeType,
+  lazyFind: boolean = false
 ): Array<codeTreeShapeType> {
   const { rectAttr: sNodeAttr } = sNode;
 
@@ -223,18 +224,21 @@ function breadthFirstSearch(
       const { rectAttr: codeNodeAttr } = item;
 
       /* TODO - 判断条件 */
-      // &&
-      //   condition.xY(sNodeAttr, codeNodeAttr)
       if (
         condition.widthHeight(sNodeAttr, codeNodeAttr) &&
         condition.xY(sNodeAttr, codeNodeAttr)
       ) {
         nodes.push(item);
+
+        // * 判断懒查找（如果是懒查找，则返回匹配到的第一个节点则退出查找）
+        if (lazyFind) {
+          break;
+        }
       }
 
       let children = item.children;
-      if (!children) {
-        break;
+      if (!children || children?.length === 0) {
+        continue;
       }
       for (let i = 0; i < children.length; i++) {
         queue.push(children[i]);
@@ -297,33 +301,25 @@ const codeFatherNodeList = handleFindTree(sketchJsonList, mainNode[0]);
 // console.log("🚀 符合条件的子节点:", res2);
 
 // * 三、改造"第一、二步"成为递归函数
-
-// 重载函数：测试用法
-// function handleRecursiveFindChildren(
-//   sketchTree: TreeType,
-//   codeTree: TreeType,
-//   counter: number | null
-// ): MatchedMap<TreeType>;
+/**
+ *
+ * TODO: 1. 查找失败的node节点，需要标记一个“标示位”
+ * TODO: 2. 需要保存一个上一次查找的父亲节点（即如果子节点没有找到，怎样标示其位置？）
+ *
+ */
 
 // let res = handleRecursiveFindChildren(sketchJsonList, mainNode, 0);
-
-// 重载函数：实际用法
-// function handleRecursiveFindChildren(
-//   sketchTree: sketchTreeShapeType,
-//   codeTree: codeTreeShapeType,
-//   counter: number | null
-// ): MatchedMap<codeTreeShapeType>;
 
 export function handleRecursiveFindChildren(
   sketchTree: sketchTreeShapeType[],
   codeTree: codeTreeShapeType[],
-  counter: number | null
+  sketchCounter: number | null,
+  originalCompleteCodeTree: codeTreeShapeType[]
 ) {
+  const orlCodeTreeRef = originalCompleteCodeTree;
+
   const matchedNodeMap: MatchedMap<codeTreeShapeType> = {};
 
-  /**
-   * TODO - 需要保存一个上一次查找的父亲节点
-   */
   const lastTimeSawFatherNode = "";
 
   //  遍历传入的sketchTree
@@ -334,35 +330,66 @@ export function handleRecursiveFindChildren(
     const sNode = sketchTree[sIndex];
 
     // 定义子节点
-    const sNodeChildren = sNode.children;
+    const sNodeChildrenList = sNode.children;
 
-    // 递归终结条件
-    if (!sNodeChildren) return;
+    /** 递归终结条件 */
+    if (!sNodeChildrenList || sNodeChildrenList?.length === 0) return;
 
     // 1）遍历当前children list下的item在 code树的匹配项
-    sNodeChildren.forEach((ssNode, ssIndex) => {
+    sNodeChildrenList.forEach((ssNode, ssIndex) => {
       // 传入sketchNode节点，在codeTree广度遍历查找匹配的节点
+
       // const resultNodeArray = breadthFirstSearch(ssNode, codeTree[sIndex]);
 
-      const resultNodeArray = breadthFirstSearch(ssNode, codeTree[sIndex]);
+      /**
+       * * 三种查找情况
+       *  1） 在其父节点没找到，则在叔父节点找
+       *  2） 在其叔父节点没找到，则在根节点懒查找
+       *  3） 在根节点也没找到，则判断：节点没有存在 或 节点偏差
+       */
+
+      /** 定义查找结果列表 */
+      const resultNodeArray = [];
+
+      // *  1） 在其父节点没找到，则在叔父节点找
+      resultNodeArray.push(...breadthFirstSearch(ssNode, codeTree[sIndex]));
+
+      if (resultNodeArray.length === 0) {
+        // * 2） 在其父节点没找到，则在叔父节点找
+        codeTree.forEach((codeNode) => {
+          resultNodeArray.push(...breadthFirstSearch(ssNode, codeNode));
+        });
+
+        // *  3）在其叔父节点没找到，则在根节点懒查找
+        if (resultNodeArray.length === 0) {
+          resultNodeArray.push(
+            ...breadthFirstSearch(ssNode, orlCodeTreeRef[0], true)
+          );
+        }
+      }
 
       // 结果保存在matchNodeList
-      matchNodeList.push(...resultNodeArray);
+      matchNodeList.push(...Array.from(new Set(resultNodeArray)));
     });
 
     // 获取到 matchNodeList 结果后，递归传入
-    matchedNodeMap[counter] = matchNodeList;
+    matchedNodeMap[sketchCounter] = matchNodeList;
 
     // key + 1，然后作为参数往下传递
-    counter++;
+    sketchCounter++;
 
     Object.assign(
       matchedNodeMap,
-      handleRecursiveFindChildren(sNodeChildren, matchNodeList, counter)
+      handleRecursiveFindChildren(
+        sNodeChildrenList,
+        matchNodeList,
+        sketchCounter,
+        orlCodeTreeRef
+      )
     );
-
-    return matchedNodeMap;
   }
+  // ! 注意要等所有的子节点遍历完
+  return matchedNodeMap;
 }
 
 // handleRecursiveFindChildren

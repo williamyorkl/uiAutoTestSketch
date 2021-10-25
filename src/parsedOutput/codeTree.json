@@ -1,6 +1,6 @@
 {
   "name": "div#app",
-  "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 825 },
+  "rectAttr": { "x": 0, "y": 0, "width": 0, "height": 0 },
   "children": [
     {
       "name": "div.main",
@@ -9,7 +9,19 @@
         {
           "name": "div.header",
           "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 95 },
-          "children": []
+          "children": [
+            {
+              "name": "code-header-children-1",
+              "rectAttr": { "x": 110.5, "y": 25, "width": 152, "height": 45 },
+              "children": [
+                {
+                  "name": "code-header-children-1-1",
+                  "rectAttr": { "x": 0, "y": 0, "width": 3751, "height": 952 },
+                  "children": []
+                }
+              ]
+            }
+          ]
         },
         {
           "name": "div.body",
@@ -18,20 +30,7 @@
         },
         {
           "name": "div.footer",
-          "rectAttr": { "x": 0, "y": 501, "width": 375, "height": 166 },
-          "children": [
-            {
-              "name": "cfoot1",
-              "rectAttr": { "x": 0, "y": 0, "width": 11175, "height": 166 },
-              "children": [
-                {
-                  "name": "cfoot1-1",
-                  "rectAttr": { "x": 0, "y": 0, "width": 3275, "height": 166 },
-                  "children": []
-                }
-              ]
-            }
-          ]
+          "rectAttr": { "x": 0, "y": 501, "width": 375, "height": 166 }
         }
       ]
     }

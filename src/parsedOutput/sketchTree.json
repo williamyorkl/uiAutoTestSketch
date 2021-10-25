@@ -11,15 +11,10 @@
           "rectAttr": { "x": 0, "y": 501, "width": 375, "height": 166 },
           "children": [
             {
-              "name": "sfoot1",
-              "rectAttr": { "x": 0, "y": 0, "width": 1175, "height": 166 },
-              "children": [
-                {
-                  "name": "sfoot1-1",
-                  "rectAttr": { "x": 0, "y": 0, "width": 3275, "height": 166 },
-                  "children": []
-                }
-              ]
+              "name": "矩形",
+              "parentNode": "footer-container",
+              "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 166 },
+              "children": []
             }
           ]
         },
@@ -39,14 +34,16 @@
           "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 95 },
           "children": [
             {
-              "name": "矩形",
-              "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 95 },
-              "children": []
-            },
-            {
-              "name": "Header",
-              "rectAttr": { "x": 110.5, "y": 25, "width": 152, "height": 45 },
-              "children": []
+              "name": "sketch-header-children-1",
+              "rectAttr": { "x": 110.5, "y": 25, "width": 1521, "height": 45 },
+              "children": [
+                {
+                  "name": "sketch-header-children-1-1",
+                  "rectAttr": { "x": 0, "y": 0, "width": 3751, "height": 952 },
+                  "children": []
+                }
+              ],
+              "parentNode": "header-container"
             }
           ]
         }

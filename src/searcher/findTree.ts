@@ -363,6 +363,7 @@ export function handleRecursiveFindChildren(
         // *  3）在其叔父节点没找到，则在根节点懒查找
         if (resultNodeArray.length === 0) {
           resultNodeArray.push(
+            // TODO - 添加标识位：证明在这个全局查找的node节点
             ...breadthFirstSearch(ssNode, orlCodeTreeRef[0], true)
           );
         }

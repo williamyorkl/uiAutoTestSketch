@@ -4,7 +4,7 @@
   "children": [
     {
       "name": "test1-page",
-      "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 667 },
+      "rectAttr": { "x": 493, "y": 270, "width": 375, "height": 667 },
       "children": [
         {
           "name": "footer-container",
@@ -12,7 +12,6 @@
           "children": [
             {
               "name": "矩形",
-              "parentNode": "footer-container",
               "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 166 },
               "children": []
             }
@@ -34,16 +33,14 @@
           "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 95 },
           "children": [
             {
-              "name": "sketch-header-children-1",
-              "rectAttr": { "x": 110.5, "y": 25, "width": 1521, "height": 45 },
-              "children": [
-                {
-                  "name": "sketch-header-children-1-1",
-                  "rectAttr": { "x": 0, "y": 0, "width": 3751, "height": 952 },
-                  "children": []
-                }
-              ],
-              "parentNode": "header-container"
+              "name": "矩形",
+              "rectAttr": { "x": 0, "y": 0, "width": 375, "height": 95 },
+              "children": []
+            },
+            {
+              "name": "Header",
+              "rectAttr": { "x": 110.5, "y": 25, "width": 152, "height": 45 },
+              "children": []
             }
           ]
         }

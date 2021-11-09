@@ -16,17 +16,6 @@ const res = handleRecursiveFindChildren(
 );
 console.log("🚀 ~ file: index.ts ~ line 12 ~ res", res);
 
-/**
- * 1. 如果传入的codeNode没在sketchTree中找到
- * *   1） 该codeNode有可能是不存在
- *      - 如果不存在，则在全局的node中，懒匹配地找。（即找到就break）
- *        - 在其它的层级找到（非父亲层级下）
- *
- *        - 在其父亲下找到（只是父亲没匹配）
- *
- * *  2） 该codeNOde有可能存在，但是写错了
- */
-
 // const t1 = {
 //   name: "sketch-header-children-1-1",
 //   rectAttr: { x: 0, y: 0, width: 3751, height: 952 },

@@ -32,7 +32,9 @@ try {
 
     if (isSpecificType<treeShapeType, {}>(sketchTree, "name", "string")) {
       debugger;
-      const res = handleRecursiveFindChildren([sketchTree], [codeTree], 0);
+      const res = handleRecursiveFindChildren([sketchTree], [codeTree], 0, [
+        codeTree,
+      ]);
 
       console.log("🚀 结果：", res);
     }
